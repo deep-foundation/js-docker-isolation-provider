@@ -1,0 +1,13 @@
+version: '3.6'
+services:
+  deep-runner-js:
+    image: menzorg/deep-runner-js:main
+    networks:
+      - deep
+    ports:
+      - 3020:3020
+    restart: always
+    environment: {}
+networks:
+  deep:
+    driver: bridge
