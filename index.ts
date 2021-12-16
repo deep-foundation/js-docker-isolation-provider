@@ -6,8 +6,11 @@ let initiated;
 const testCode = '(()=>{return console.log})()';
 
 app.use(express.json());
+app.use('/', (req, res, next)=>{
+  res.status(200);
+});
 app.use('/init', (req, res, next)=>{
-  initiated = eval(testCode);
+  initiated = eval(req.params.code);
   res.json('ok');
 });
 app.use('/eval', (req, res, next)=>{
