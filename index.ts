@@ -10,8 +10,9 @@ app.get('/', (req, res)=>{
   res.status(200);
 });
 app.post('/init', (req, res)=>{
-  console.log('code', req?.params?.code);
-  initiated = eval(req?.params?.code);
+  console.log('req?.params', req?.params);
+  console.log('req?.body', req?.body);
+  initiated = eval(req?.body?.params?.code);
   console.log('initiated', initiated);
   res.json('ok');
 });
