@@ -3,8 +3,6 @@ import express from 'express';
 const app = express();
 let initiated;
 
-const testCode = '(()=>{return console.log})()';
-
 app.use(express.json());
 app.get('/', (req, res)=>{
   res.status(200);
@@ -16,7 +14,7 @@ app.post('/init', (req, res)=>{
   res.json('ok');
 });
 app.post('/eval', (req, res)=>{
-  typeof initiated === 'function' ? res.json(initiated(req.query)) : res.json({error: 'init error'});
+  typeof initiated === 'function' ? res.json(initiated(req.body)) : res.json({error: 'init error'});
 });
   
 app.listen(process.env.PORT, () => {
