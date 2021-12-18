@@ -14,7 +14,11 @@ app.post('/init', (req, res)=>{
   res.json('ok');
 });
 app.post('/eval', (req, res)=>{
-  typeof initiated === 'function' ? res.json(initiated(req.body)) : res.json({error: 'init error'});
+  // typeof initiated === 'function' ? res.json(initiated(req.body)) : res.json({error: 'init error'});
+  if (typeof initiated !== 'function') res.json({error: 'init error'});
+  const result = initiated(req.body);
+  console.log('eval result', result);
+  res.json(result);
 });
   
 app.listen(process.env.PORT, () => {
