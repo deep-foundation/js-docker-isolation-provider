@@ -6,17 +6,19 @@ let initiated;
 const testCode = '(()=>{return console.log})()';
 
 app.use(express.json());
-app.use('/', (req, res, next)=>{
+app.get('/', (req, res)=>{
   res.status(200);
 });
-app.use('/init', (req, res, next)=>{
-  initiated = eval(req.params.code);
+app.post('/init', (req, res)=>{
+  console.log('code', req?.params?.code);
+  initiated = eval(req?.params?.code);
+  console.log('initiated', initiated);
   res.json('ok');
 });
-app.use('/eval', (req, res, next)=>{
-  initiated ? res.json(initiated(req.query)) : res.json({error: 'not initiated'});
+app.post('/eval', (req, res)=>{
+  typeof initiated === 'function' ? res.json(initiated(req.query)) : res.json({error: 'not initiated'});
 });
-
+  
 app.listen(process.env.PORT, () => {
   console.log(`Hello bugfixers! Listening ${process.env.PORT} port`);
 })
