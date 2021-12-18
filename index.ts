@@ -9,7 +9,7 @@ app.get('/healthz', (req, res)=>{
 });
 app.post('/init', (req, res)=>{
   console.log('req?.body', req?.body);
-  initiated = eval(req?.body?.code);
+  initiated = eval(req?.body?.params?.code);
   console.log('initiated', initiated);
   res.json('ok');
 });
