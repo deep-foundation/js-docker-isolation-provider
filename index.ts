@@ -10,14 +10,13 @@ app.get('/', (req, res)=>{
   res.status(200);
 });
 app.post('/init', (req, res)=>{
-  console.log('req?.params', req?.params);
   console.log('req?.body', req?.body);
-  initiated = eval(req?.body?.params?.code);
+  initiated = eval(req?.body?.code);
   console.log('initiated', initiated);
   res.json('ok');
 });
 app.post('/eval', (req, res)=>{
-  typeof initiated === 'function' ? res.json(initiated(req.query)) : res.json({error: 'not initiated'});
+  typeof initiated === 'function' ? res.json(initiated(req.query)) : res.json({error: 'init error'});
 });
   
 app.listen(process.env.PORT, () => {
