@@ -4,7 +4,7 @@ const app = express();
 let initiated;
 
 app.use(express.json());
-app.get('/', (req, res)=>{
+app.get('/healthz', (req, res)=>{
   res.status(200);
 });
 app.post('/init', (req, res)=>{
