@@ -13,11 +13,11 @@ app.post('/init', (req, res)=>{
   console.log('initiated', initiated);
   res.json('ok');
 });
-app.post('/exec', (req, res)=>{
+app.post('/call', (req, res)=>{
   // typeof initiated === 'function' ? res.json(initiated(req.body)) : res.json({error: 'init error'});
   if (typeof initiated !== 'function') res.json({error: 'init error'});
   const result = initiated(req.body);
-  console.log('exec result', result);
+  console.log('call result', result);
   res.json(result);
 });
   
