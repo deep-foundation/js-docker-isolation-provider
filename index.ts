@@ -5,7 +5,7 @@ let initiated;
 
 app.use(express.json());
 app.get('/healthz', (req, res)=>{
-  res.status(200);
+  res.json('ok');
 });
 app.post('/init', (req, res)=>{
   console.log('req?.body', req?.body);
