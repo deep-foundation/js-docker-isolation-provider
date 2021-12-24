@@ -8,35 +8,41 @@ app.get('/healthz', (req, res)=>{
   res.json('ok');
 });
 app.post('/init', (req, res)=>{
-  try 
+  try
   {
-    console.log('req?.body', req?.body);
+    console.log('req?.body: ', req?.body);
     initiated = eval(req?.body?.params?.code);
-    console.log('initiated', initiated);
+    console.log('initiated: ', initiated);
+    if (typeof initiated !== 'function')
+    {
+      throw new Error("Executed handler's code didn't return a function.");
+    }
     res.json('ok');
   }
   catch(error)
   {
-    console.log('error', JSON.stringify(error, null, 2));
+    console.log('unhandled error: ', JSON.stringify(error, null, 2));
     res.json('error');
   }
 });
-app.post('/call', (req, res)=>{
+app.post('/call', async (req, res)=>{
   try 
   {
-    // typeof initiated === 'function' ? res.json(initiated(req.body)) : res.json({error: 'init error'});
-    if (typeof initiated !== 'function') res.json({ rejected: { error: 'init error' }});
-    const result = initiated(req.body);
+    if (typeof initiated !== 'function')
+    {
+      throw new Error('Function was not initiated during init phase.');
+    }
+    const result = await initiated(req.body); // Supports both sync and async functions the same way
     console.log('call result', result);
     res.json({ resolved: result });
   }
-  catch(error)
+  catch(rejected)
   {
-    console.log('error', JSON.stringify(error, null, 2));
-    res.json({ rejected: { error: error?.message ?? error }});
+    console.log('rejected: ', JSON.stringify(rejected, null, 2));
+    res.json({ rejected });
   }
 });
   
 app.listen(process.env.PORT, () => {
   console.log(`Listening ${process.env.PORT} port`);
-})
+});
