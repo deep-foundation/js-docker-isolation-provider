@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   deep-runner-js:
-    image: menzorg/deep-runner-js:main
+    image: konard/deep-runner-js:main
     networks:
       - deep
     ports:
