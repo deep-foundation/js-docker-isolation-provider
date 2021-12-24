@@ -3,11 +3,13 @@ import express from 'express';
 const app = express();
 let initiated;
 
+const toJSON = (data) => JSON.stringify(data, Object.getOwnPropertyNames(data), 2);
+
 app.use(express.json());
-app.get('/healthz', (req, res)=>{
+app.get('/healthz', (req, res) => {
   res.json('ok');
 });
-app.post('/init', (req, res)=>{
+app.post('/init', (req, res) => {
   try
   {
     console.log('req?.body: ', req?.body);
@@ -21,11 +23,11 @@ app.post('/init', (req, res)=>{
   }
   catch(error)
   {
-    console.log('unhandled error: ', JSON.stringify(error, null, 2));
+    console.log('unhandled error: ', toJSON(error));
     res.json('error');
   }
 });
-app.post('/call', async (req, res)=>{
+app.post('/call', async (req, res) => {
   try 
   {
     if (typeof initiated !== 'function')
@@ -38,7 +40,7 @@ app.post('/call', async (req, res)=>{
   }
   catch(rejected)
   {
-    console.log('rejected: ', JSON.stringify(rejected, null, 2));
+    console.log('rejected: ', toJSON(rejected));
     res.json({ rejected });
   }
 });
