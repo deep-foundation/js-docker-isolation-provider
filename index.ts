@@ -40,8 +40,9 @@ app.post('/call', async (req, res) => {
   }
   catch(rejected)
   {
-    console.log('rejected: ', toJSON(rejected));
-    res.json({ rejected });
+    const processedRejection = JSON.parse(toJSON(rejected));
+    console.log('rejected: ', processedRejection);
+    res.json({ rejected: processedRejection });
   }
 });
   
