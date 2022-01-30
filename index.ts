@@ -23,7 +23,8 @@ app.post('/init', (req, res) => {
 app.post('/call', async (req, res) => {
   try 
   {
-    const token = req?.body?.jwt;
+    console.log({ body: req?.body });
+    const token = req?.body?.params?.jwt;
     if (!token) throw new Error('No token provided');
     initiated = memoEval(req?.body?.params?.code);
     if (typeof initiated !== 'function')
