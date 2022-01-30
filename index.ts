@@ -1,7 +1,15 @@
 import express from 'express';
+import { generateApolloClient } from "@deep-foundation/hasura/client";
+import { DeepClient } from "@deep-foundation/deeplinks/imports/client";
+import memoize from 'lodash/memoize'
+
+const memoEval = memoize(eval);
 
 const app = express();
 let initiated;
+
+const HASURA_PATH = process.env.HASURA_PATH || 'localhost:8080';
+const HASURA_SSL = process.env.HASURA_SSL || 0;
 
 const toJSON = (data) => JSON.stringify(data, Object.getOwnPropertyNames(data), 2);
 
@@ -10,31 +18,28 @@ app.get('/healthz', (req, res) => {
   res.json('ok');
 });
 app.post('/init', (req, res) => {
-  try
-  {
-    console.log('req?.body: ', req?.body);
-    initiated = eval(req?.body?.params?.code);
-    console.log('initiated: ', initiated);
-    if (typeof initiated !== 'function')
-    {
-      throw new Error("Executed handler's code didn't return a function.");
-    }
-    res.json('ok');
-  }
-  catch(error)
-  {
-    console.log('unhandled error: ', toJSON(error));
-    res.json('error');
-  }
+  res.json('ok');
 });
 app.post('/call', async (req, res) => {
   try 
   {
+    if (typeof initiated !== 'function') throw new Error('Function was not initiated during init phase.');
+    const token = req?.body?.jwt;
+    if (!token) throw new Error('No token provided');
+    initiated = memoEval(req?.body?.params?.code);
     if (typeof initiated !== 'function')
     {
-      throw new Error('Function was not initiated during init phase.');
+      throw new Error("Executed handler's code didn't return a function.");
     }
-    const result = await initiated(req.body); // Supports both sync and async functions the same way
+
+    const apolloClient = generateApolloClient({
+      path: `${HASURA_PATH}/v1/graphql`,
+      ssl: !!+HASURA_SSL,
+      token,
+    });
+
+    const deepClient = new DeepClient({ apolloClient });
+    const result = await initiated({ deep: deepClient }); // Supports both sync and async functions the same way
     console.log('call result', result);
     res.json({ resolved: result });
   }
