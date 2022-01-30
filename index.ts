@@ -23,7 +23,6 @@ app.post('/init', (req, res) => {
 app.post('/call', async (req, res) => {
   try 
   {
-    if (typeof initiated !== 'function') throw new Error('Function was not initiated during init phase.');
     const token = req?.body?.jwt;
     if (!token) throw new Error('No token provided');
     initiated = memoEval(req?.body?.params?.code);
@@ -50,7 +49,7 @@ app.post('/call', async (req, res) => {
     res.json({ rejected: processedRejection });
   }
 });
-  
+
 app.listen(process.env.PORT, () => {
   console.log(`Listening ${process.env.PORT} port`);
 });
