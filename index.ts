@@ -8,17 +8,17 @@ const memoEval = memoize(eval);
 const app = express();
 let initiated;
 
-const HASURA_PATH = process.env.HASURA_PATH || 'localhost:8080';
-const HASURA_SSL = process.env.HASURA_SSL || 0;
+const GQL_PATH = process.env.GQL_PATH || 'localhost:3006/gql';
+const GQL_SSL = process.env.GQL_SSL || 0;
 
 const toJSON = (data) => JSON.stringify(data, Object.getOwnPropertyNames(data), 2);
 
 app.use(express.json());
 app.get('/healthz', (req, res) => {
-  res.json('ok');
+  res.json({});
 });
 app.post('/init', (req, res) => {
-  res.json('ok');
+  res.json({});
 });
 app.post('/call', async (req, res) => {
   try 
@@ -33,8 +33,8 @@ app.post('/call', async (req, res) => {
     }
 
     const apolloClient = generateApolloClient({
-      path: `${HASURA_PATH}/v1/graphql`,
-      ssl: !!+HASURA_SSL,
+      path: GQL_PATH,
+      ssl: !!+GQL_SSL,
       token,
     });
 
