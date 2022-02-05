@@ -7,5 +7,4 @@ COPY index.ts .
 COPY node_modules ./node_modules
 COPY imports ./imports
 
-EXPOSE 3020
 ENTRYPOINT ["node", "index.js"]

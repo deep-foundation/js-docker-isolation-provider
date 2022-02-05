@@ -8,7 +8,7 @@ const memoEval = memoize(eval);
 const app = express();
 let initiated;
 
-const GQL_PATH = process.env.GQL_PATH || 'localhost:3006/gql';
+const GQL_URN = process.env.GQL_URN || 'localhost:3006/gql';
 const GQL_SSL = process.env.GQL_SSL || 0;
 
 const toJSON = (data) => JSON.stringify(data, Object.getOwnPropertyNames(data), 2);
@@ -33,7 +33,7 @@ app.post('/call', async (req, res) => {
     }
 
     const apolloClient = generateApolloClient({
-      path: GQL_PATH,
+      path: GQL_URN,
       ssl: !!+GQL_SSL,
       token,
     });
