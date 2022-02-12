@@ -1,7 +1,7 @@
 version: '3.6'
 services:
-  deep-runner-js:
-    image: konard/deep-runner-js:main
+  js-docker-isolation-provider:
+    image: deepf/js-docker-isolation-provider:main
     networks:
       - deep
     ports:

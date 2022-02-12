@@ -1,5 +1,5 @@
 {
-  "name": "@deep-foundation/jsRunner",
+  "name": "@deep-foundation/js-docker-isolation-provider",
   "version": "0.0.1",
   "scripts": {
     "dev": "nodemon index.ts",
