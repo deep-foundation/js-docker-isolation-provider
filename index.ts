@@ -22,10 +22,9 @@ app.post('/init', (req, res) => {
   res.json({});
 });
 app.post('/call', async (req, res) => {
-  try 
-  {
-    console.log({ body: req?.body });
-    const token = req?.body?.params?.jwt;
+  try {
+    console.log('call body', req.body);
+    const { jwt: token, code, data } = req.body || {};
     if (!token) throw new Error('No token provided');
     initiated = memoEval(req?.body?.params?.code);
     if (typeof initiated !== 'function')
@@ -40,7 +39,7 @@ app.post('/call', async (req, res) => {
     });
 
     const deepClient = new DeepClient({ apolloClient });
-    const result = await initiated({ deep: deepClient, gql }); // Supports both sync and async functions the same way
+    const result = await initiated({ data, deep: deepClient, gql }); // Supports both sync and async functions the same way
     console.log('call result', result);
     res.json({ resolved: result });
   }
