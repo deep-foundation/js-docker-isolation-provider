@@ -2,7 +2,7 @@ import express from 'express';
 import { generateApolloClient } from "@deep-foundation/hasura/client";
 import { DeepClient } from "@deep-foundation/deeplinks/imports/client";
 import { gql } from '@apollo/client';
-import memoize from 'lodash/memoize'
+import memoize from 'lodash/memoize';
 
 const memoEval = memoize(eval);
 
@@ -39,7 +39,7 @@ app.post('/call', async (req, res) => {
     });
 
     const deepClient = new DeepClient({ apolloClient });
-    const result = await initiated({ data, deep: deepClient, gql }); // Supports both sync and async functions the same way
+    const result = await initiated({ data, deep: deepClient, gql, require }); // Supports both sync and async functions the same way
     console.log('call result', result);
     res.json({ resolved: result });
   }
