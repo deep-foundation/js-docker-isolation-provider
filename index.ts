@@ -53,7 +53,7 @@ app.post('/call', async (req, res) => {
   catch(rejected)
   {
     const processedRejection = JSON.parse(toJSON(rejected));
-    console.log('rejected: ', processedRejection);
+    console.log('rejected', processedRejection);
     res.json({ rejected: processedRejection });
   }
 });
@@ -61,8 +61,8 @@ app.post('/call', async (req, res) => {
 app.use('/http-call', async (req, res, next) => {
   try {
     const options = req.headers['deep-call-options'] || '{}';
-    console.log('deepCallOptions', JSON.stringify(options, null, 2));
-    const { jwt, code, data } = options;
+    console.log('deep-call-options', options);
+    const { jwt, code, data } = JSON.parse(options as string);
     const fn = makeFunction(code);
     const deep = makeDeepClient(jwt);
     await fn(req, res, next, { data, deep, gql, require }); // Supports both sync and async functions the same way
@@ -70,7 +70,7 @@ app.use('/http-call', async (req, res, next) => {
   catch(rejected)
   {
     const processedRejection = JSON.parse(toJSON(rejected));
-    console.log('rejected: ', processedRejection);
+    console.log('rejected', processedRejection);
     res.json({ rejected: processedRejection }); // TODO: Do we need to send json to client?
   }
 });
