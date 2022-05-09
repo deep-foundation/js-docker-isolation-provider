@@ -7,12 +7,31 @@ import memoize from 'lodash/memoize';
 const memoEval = memoize(eval);
 
 const app = express();
-let initiated;
 
 const GQL_URN = process.env.GQL_URN || 'localhost:3006/gql';
 const GQL_SSL = process.env.GQL_SSL || 0;
 
 const toJSON = (data) => JSON.stringify(data, Object.getOwnPropertyNames(data), 2);
+
+const makeFunction = (code: string) => {
+  const fn = memoEval(code);
+  if (typeof fn !== 'function')
+  {
+    throw new Error("Executed handler's code didn't return a function.");
+  }
+  return fn;
+}
+
+const makeDeepClient = (token: string) => {
+  if (!token) throw new Error('No token provided');
+  const apolloClient = generateApolloClient({
+    path: GQL_URN,
+    ssl: !!+GQL_SSL,
+    token,
+  });
+  const deepClient = new DeepClient({ apolloClient });
+  return deepClient;
+}
 
 app.use(express.json());
 app.get('/healthz', (req, res) => {
@@ -23,23 +42,11 @@ app.post('/init', (req, res) => {
 });
 app.post('/call', async (req, res) => {
   try {
-    console.log('call body params', req.body?.params);
-    const { jwt: token, code, data } = req.body?.params || {};
-    if (!token) throw new Error('No token provided');
-    initiated = memoEval(req?.body?.params?.code);
-    if (typeof initiated !== 'function')
-    {
-      throw new Error("Executed handler's code didn't return a function.");
-    }
-
-    const apolloClient = generateApolloClient({
-      path: GQL_URN,
-      ssl: !!+GQL_SSL,
-      token,
-    });
-
-    const deepClient = new DeepClient({ apolloClient });
-    const result = await initiated({ data, deep: deepClient, gql, require }); // Supports both sync and async functions the same way
+    console.log('call body params', req?.body?.params);
+    const { jwt, code, data } = req?.body?.params || {};
+    const fn = makeFunction(code);
+    const deep = makeDeepClient(jwt);
+    const result = await fn({ data, deep, gql, require }); // Supports both sync and async functions the same way
     console.log('call result', result);
     res.json({ resolved: result });
   }
@@ -50,6 +57,23 @@ app.post('/call', async (req, res) => {
     res.json({ rejected: processedRejection });
   }
 });
+
+app.use('/http-call', async (req, res, next) => {
+  try {
+    const options = req.headers['deep-call-options'] || '{}';
+    console.log('deepCallOptions', JSON.stringify(options, null, 2));
+    const { jwt, code, data } = options;
+    const fn = makeFunction(code);
+    const deep = makeDeepClient(jwt);
+    await fn(req, res, next, { data, deep, gql, require }); // Supports both sync and async functions the same way
+  }
+  catch(rejected)
+  {
+    const processedRejection = JSON.parse(toJSON(rejected));
+    console.log('rejected: ', processedRejection);
+    res.json({ rejected: processedRejection }); // TODO: Do we need to send json to client?
+  }
+}
 
 app.listen(process.env.PORT, () => {
   console.log(`Listening ${process.env.PORT} port`);
