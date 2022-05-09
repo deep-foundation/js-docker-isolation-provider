@@ -73,7 +73,7 @@ app.use('/http-call', async (req, res, next) => {
     console.log('rejected: ', processedRejection);
     res.json({ rejected: processedRejection }); // TODO: Do we need to send json to client?
   }
-}
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`Listening ${process.env.PORT} port`);
