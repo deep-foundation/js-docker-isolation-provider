@@ -11,9 +11,25 @@
     "@deep-foundation/deeplinks": "0.0.70",
     "@deep-foundation/hasura": "0.0.15",
     "body-parser": "^1.19.0",
+    "esia": "^0.2.3",
     "express": "^4.17.1",
     "lodash": "^4.17.21",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "passport": "^0.6.0",
+    "passport-apple": "^2.0.1",
+    "passport-auth0": "^1.4.2",
+    "passport-discord": "^0.1.4",
+    "passport-esia": "0.0.5",
+    "passport-esia-esm": "^0.1.0",
+    "passport-facebook": "^3.0.0",
+    "passport-github": "^1.1.0",
+    "passport-gitlab2": "^5.0.0",
+    "passport-google": "^0.3.0",
+    "passport-http-bearer": "^1.0.1",
+    "passport-microsoft": "^1.0.0",
+    "passport-oauth2": "^1.6.1",
+    "passport-openid": "^0.4.0",
+    "passport-vkontakte": "^0.5.0"
   },
   "engines": {
     "node": "^14.15.0"
