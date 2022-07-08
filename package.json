@@ -28,6 +28,7 @@
     "passport-google-oauth": "^2.0.0",
     "passport-google-oidc": "^0.1.0",
     "passport-http-bearer": "^1.0.1",
+    "passport-local": "^1.0.0",
     "passport-microsoft": "^1.0.0",
     "passport-oauth2": "^1.6.1",
     "passport-openid": "^0.4.0",
