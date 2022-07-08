@@ -13,6 +13,7 @@
     "body-parser": "^1.19.0",
     "esia": "^0.2.3",
     "express": "^4.17.1",
+    "express-session": "^1.17.3",
     "lodash": "^4.17.21",
     "nodemon": "^2.0.15",
     "passport": "^0.6.0",
