@@ -1,6 +1,6 @@
 import express from 'express';
 import { generateApolloClient } from "@deep-foundation/hasura/client";
-import { DeepClient } from "@deep-foundation/deeplinks/imports/client";
+import { DeepClient, parseJwt } from "@deep-foundation/deeplinks/imports/client";
 import { gql } from '@apollo/client';
 import memoize from 'lodash/memoize';
 
@@ -24,12 +24,14 @@ const makeFunction = (code: string) => {
 
 const makeDeepClient = (token: string) => {
   if (!token) throw new Error('No token provided');
+  const decoded = parseJwt(token);
+  const linkId = decoded?.userId;
   const apolloClient = generateApolloClient({
     path: GQL_URN,
     ssl: !!+GQL_SSL,
     token,
   });
-  const deepClient = new DeepClient({ apolloClient });
+  const deepClient = new DeepClient({ apolloClient, linkId, token });
   return deepClient;
 }
 
