@@ -8,7 +8,7 @@
     "package:publish": "npm run package:build && npm publish --access public && npm run package:unbuild"
   },
   "dependencies": {
-    "@deep-foundation/deeplinks": "0.0.70",
+    "@deep-foundation/deeplinks": "git://github.com/@deep-foundation/deeplinks.git#b6cbb3475e5fc6b503495c64bc354a4eb1fd73af",
     "@deep-foundation/hasura": "0.0.15",
     "body-parser": "^1.19.0",
     "esia": "^0.2.3",
