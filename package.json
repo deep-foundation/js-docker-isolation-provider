@@ -10,11 +10,13 @@
   "dependencies": {
     "@deep-foundation/deeplinks": "0.0.72",
     "@deep-foundation/hasura": "0.0.15",
+    "@types/node": "^14.18.9",
     "axios": "^0.27.2",
     "body-parser": "^1.19.0",
     "esia": "^0.2.3",
     "express": "^4.17.1",
     "express-session": "^1.17.3",
+    "jest": "^26.6.3",
     "lodash": "^4.17.21",
     "nodemon": "^2.0.15",
     "passport": "^0.6.0",
@@ -34,15 +36,12 @@
     "passport-microsoft": "^1.0.0",
     "passport-oauth2": "^1.6.1",
     "passport-openid": "^0.4.0",
-    "passport-vkontakte": "^0.5.0"
+    "passport-vkontakte": "^0.5.0",
+    "react": "^18.2.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.4.3"
   },
   "engines": {
     "node": "^14.15.0"
-  },
-  "devDependencies": {
-    "@types/node": "^14.18.9",
-    "jest": "^26.6.3",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.4.3"
   }
 }
