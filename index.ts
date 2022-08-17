@@ -3,6 +3,7 @@ import { generateApolloClient } from "@deep-foundation/hasura/client";
 import { DeepClient, parseJwt } from "@deep-foundation/deeplinks/imports/client";
 import { gql } from '@apollo/client';
 import memoize from 'lodash/memoize';
+import http from 'http';
 
 const memoEval = memoize(eval);
 
@@ -77,6 +78,5 @@ app.use('/http-call', async (req, res, next) => {
   }
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Listening ${process.env.PORT} port`);
-});
+http.createServer({ maxHeaderSize: 10*1024*1024*1024 }, app).listen(process.env.PORT);
+console.log(`Listening ${process.env.PORT} port`);
