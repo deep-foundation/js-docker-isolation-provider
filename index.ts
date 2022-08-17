@@ -62,7 +62,7 @@ app.post('/call', async (req, res) => {
 
 app.use('/http-call', async (req, res, next) => {
   try {
-    const options = req.headers['deep-call-options'] || '{}';
+    const options = decodeURI(`${req.headers['deep-call-options']}`) || '{}';
     console.log('deep-call-options', options);
     const { jwt, code, data } = JSON.parse(options as string);
     const fn = makeFunction(code);
