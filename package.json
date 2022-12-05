@@ -28,7 +28,6 @@
     "passport-auth0": "^1.4.2",
     "passport-discord": "^0.1.4",
     "passport-esia": "0.0.5",
-    "passport-esia-esm": "^0.1.0",
     "passport-facebook": "^3.0.0",
     "passport-github": "^1.1.0",
     "passport-github2": "^0.1.12",
