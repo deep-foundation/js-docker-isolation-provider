@@ -8,8 +8,8 @@
     "package:publish": "npm run package:build && npm publish --access public && npm run package:unbuild"
   },
   "dependencies": {
-    "@deep-foundation/deeplinks": "0.0.96",
-    "@deep-foundation/hasura": "0.0.18",
+    "@deep-foundation/deeplinks": "^0.0.97",
+    "@deep-foundation/hasura": "^0.0.19",
     "@types/node": "^14.18.9",
     "apollo-server": "^2.21.0",
     "apollo-server-core": "^3.6.1",
@@ -21,6 +21,7 @@
     "express-session": "^1.17.3",
     "jest": "^26.6.3",
     "lodash": "^4.17.21",
+    "mathjs": "^11.4.0",
     "nodemon": "^2.0.15",
     "passport": "^0.6.0",
     "passport-apple": "^2.0.1",
