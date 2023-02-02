@@ -1,4 +1,4 @@
-FROM node:14.15-stretch
+FROM node:16.18
 
 COPY package.json .
 COPY index.js .
