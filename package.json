@@ -8,7 +8,7 @@
     "package:publish": "npm run package:build && npm publish --access public && npm run package:unbuild"
   },
   "dependencies": {
-    "@deep-foundation/deeplinks": "0.0.108",
+    "@deep-foundation/deeplinks": "^0.0.109",
     "@deep-foundation/hasura": "^0.0.19",
     "@google-cloud/speech": "^5.3.1",
     "@types/node": "^14.18.9",
