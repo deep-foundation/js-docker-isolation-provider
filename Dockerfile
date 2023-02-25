@@ -9,3 +9,5 @@ COPY imports ./imports
 COPY key.json .
 
 ENTRYPOINT ["node", "index.js"]
+
+ENV GOOGLE_APPLICATION_CREDENTIALS=./key.json
