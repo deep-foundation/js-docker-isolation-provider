@@ -10,6 +10,7 @@
   "dependencies": {
     "@deep-foundation/deeplinks": "^0.0.109",
     "@deep-foundation/hasura": "^0.0.19",
+    "@google-cloud/language": "^5.2.1",
     "@google-cloud/speech": "^5.3.1",
     "@google-cloud/vision": "^3.1.2",
     "@types/node": "^14.18.9",
