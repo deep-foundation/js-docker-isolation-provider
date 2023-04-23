@@ -4,6 +4,7 @@ import { DeepClient, parseJwt } from "@deep-foundation/deeplinks/imports/client"
 import { gql } from '@apollo/client';
 import memoize from 'lodash/memoize';
 import http from 'http';
+// import convertAudio from 'convert-audio';
 
 const memoEval = memoize(eval);
 
@@ -36,6 +37,13 @@ const makeDeepClient = (token: string) => {
   return deepClient;
 }
 
+const requireWrapper = (id: string) => {
+  // if (id === 'convert-audio') {
+  //   return convertAudio;
+  // }
+  return require(id);
+}
+
 app.use(express.json());
 app.get('/healthz', (req, res) => {
   res.json({});
@@ -49,7 +57,7 @@ app.post('/call', async (req, res) => {
     const { jwt, code, data } = req?.body?.params || {};
     const fn = makeFunction(code);
     const deep = makeDeepClient(jwt);
-    const result = await fn({ data, deep, gql, require }); // Supports both sync and async functions the same way
+    const result = await fn({ data, deep, gql, require: requireWrapper }); // Supports both sync and async functions the same way
     console.log('call result', result);
     res.json({ resolved: result });
   }
@@ -68,7 +76,7 @@ app.use('/http-call', async (req, res, next) => {
     const { jwt, code, data } = JSON.parse(options as string);
     const fn = makeFunction(code);
     const deep = makeDeepClient(jwt);
-    await fn(req, res, next, { data, deep, gql, require }); // Supports both sync and async functions the same way
+    await fn(req, res, next, { data, deep, gql, require: requireWrapper }); // Supports both sync and async functions the same way
   }
   catch(rejected)
   {
