@@ -4,7 +4,7 @@ import { DeepClient, parseJwt } from "@deep-foundation/deeplinks/imports/client"
 import { gql } from '@apollo/client';
 import memoize from 'lodash/memoize';
 import http from 'http';
-import { parseStream, parseFile } from 'music-metadata';
+// import { parseStream, parseFile } from 'music-metadata';
 
 const memoEval = memoize(eval);
 
@@ -38,9 +38,9 @@ const makeDeepClient = (token: string) => {
 }
 
 const requireWrapper = (id: string) => {
-  if (id === 'music-metadata') {
-    return { parseStream, parseFile };
-  }
+  // if (id === 'music-metadata') {
+  //   return { parseStream, parseFile };
+  // }
   return require(id);
 }
 
