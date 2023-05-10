@@ -52,6 +52,7 @@
     "passport-oauth2": "^1.6.1",
     "passport-openid": "^0.4.0",
     "passport-vkontakte": "^0.5.0",
+    "puppeteer": "^20.1.2",
     "react": "^18.2.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.4.3"
