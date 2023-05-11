@@ -19,6 +19,7 @@
     "apollo-server": "^2.21.0",
     "apollo-server-core": "^3.6.1",
     "apollo-server-express": "^3.5.0",
+    "assert": "^2.0.0",
     "axios": "^0.27.2",
     "body-parser": "^1.19.0",
     "convert-audio": "^1.0.1",
