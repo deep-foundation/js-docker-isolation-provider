@@ -17,6 +17,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14.15'
+      - name: Install latest npm
+        run: npm install -g npm@latest
       - name: build
         run: npm ci && npm run package:build
       - name: Display npm log
