@@ -1,4 +1,4 @@
-FROM node:16.18
+FROM node:18.16
 
 COPY package.json .
 COPY index.js .
