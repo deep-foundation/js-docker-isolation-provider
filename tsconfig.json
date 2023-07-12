@@ -6,14 +6,15 @@
     "noImplicitAny": false,
     "removeComments": true,
     "jsx": "react",
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "node",
     "target": "es2015",
     "skipLibCheck": true,
     "lib": [
       "dom",
       "es6",
-      "es7"
+      "es7",
+      "ES2020"
     ],
     "resolveJsonModule": true,
     "esModuleInterop": true,

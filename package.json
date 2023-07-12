@@ -1,6 +1,7 @@
 {
   "name": "@deep-foundation/js-docker-isolation-provider",
   "version": "0.0.8",
+  "type": "module",
   "scripts": {
     "dev": "nodemon index.ts",
     "package:build": "tsc --project tsconfig.json",
