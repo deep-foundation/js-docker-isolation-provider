@@ -1,10 +1,12 @@
 import express from 'express';
 import { generateApolloClient } from "@deep-foundation/hasura/client.js";
-import { DeepClient, parseJwt } from "@deep-foundation/deeplinks/imports/client";
-import { gql } from '@apollo/client';
-import memoize from 'lodash/memoize';
+import { DeepClient, parseJwt } from "@deep-foundation/deeplinks/imports/client.js";
+import { gql } from '@apollo/client/index.js';
+import memoize from 'lodash/memoize.js';
 import http from 'http';
 // import { parseStream, parseFile } from 'music-metadata';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
 const memoEval = memoize(eval);
 
