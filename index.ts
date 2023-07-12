@@ -18,7 +18,8 @@ const GQL_SSL = process.env.GQL_SSL || 0;
 const toJSON = (data) => JSON.stringify(data, Object.getOwnPropertyNames(data), 2);
 
 const makeFunction = (code: string) => {
-  const fn = memoEval(code);
+  const newCode = code.replace(/require\((.+?)\)/g, 'await deep.import($1)');
+  const fn = memoEval(newCode);
   if (typeof fn !== 'function')
   {
     throw new Error("Executed handler's code didn't return a function.");
@@ -35,15 +36,21 @@ const makeDeepClient = (token: string) => {
     ssl: !!+GQL_SSL,
     token,
   });
-  const deepClient = new DeepClient({ apolloClient, linkId, token });
+  const deepClient = new DeepClient({ apolloClient, linkId, token }) as any;
+  deepClient.import = async (path: string) => {
+    let module;
+    try {
+      module = require(path)
+    } catch (e) {
+      if (e.code === 'ERR_REQUIRE_ESM') {
+        module = await import(path)
+      } else {
+        throw e;
+      }
+    }
+    return module;
+  };
   return deepClient;
-}
-
-const requireWrapper = (id: string) => {
-  // if (id === 'music-metadata') {
-  //   return { parseStream, parseFile };
-  // }
-  return require(id);
 }
 
 app.use(express.json());
@@ -59,7 +66,7 @@ app.post('/call', async (req, res) => {
     const { jwt, code, data } = req?.body?.params || {};
     const fn = makeFunction(code);
     const deep = makeDeepClient(jwt);
-    const result = await fn({ data, deep, gql, require: requireWrapper }); // Supports both sync and async functions the same way
+    const result = await fn({ data, deep, gql }); // Supports both sync and async functions the same way
     console.log('call result', result);
     res.json({ resolved: result });
   }
@@ -78,7 +85,7 @@ app.use('/http-call', async (req, res, next) => {
     const { jwt, code, data } = JSON.parse(options as string);
     const fn = makeFunction(code);
     const deep = makeDeepClient(jwt);
-    await fn(req, res, next, { data, deep, gql, require: requireWrapper }); // Supports both sync and async functions the same way
+    await fn(req, res, next, { data, deep, gql }); // Supports both sync and async functions the same way
   }
   catch(rejected)
   {
