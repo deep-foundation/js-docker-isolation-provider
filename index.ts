@@ -6,6 +6,7 @@ import memoize from 'lodash/memoize.js';
 import http from 'http';
 // import { parseStream, parseFile } from 'music-metadata';
 import { createRequire } from 'node:module';
+import bodyParser from 'body-parser';
 const require = createRequire(import.meta.url);
 
 const memoEval = memoize(eval);
@@ -59,7 +60,8 @@ const requireWrapper = (id: string) => {
   return require(id);
 }
 
-app.use(express.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.get('/healthz', (req, res) => {
   res.json({});
 });
@@ -100,9 +102,6 @@ app.use('/http-call', async (req, res, next) => {
     res.json({ rejected: processedRejection }); // TODO: Do we need to send json to client?
   }
 });
-
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb'}));
 
 http.createServer({ maxHeaderSize: 10*1024*1024*1024 }, app).listen(process.env.PORT);
 console.log(`Listening ${process.env.PORT} port`);
