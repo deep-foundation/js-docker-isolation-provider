@@ -101,5 +101,8 @@ app.use('/http-call', async (req, res, next) => {
   }
 });
 
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
+
 http.createServer({ maxHeaderSize: 10*1024*1024*1024 }, app).listen(process.env.PORT);
 console.log(`Listening ${process.env.PORT} port`);
