@@ -37,19 +37,6 @@ const makeDeepClient = (token: string) => {
     token,
   });
   const deepClient = new DeepClient({ apolloClient, linkId, token }) as any;
-  deepClient.import = async (path: string) => {
-    let module;
-    try {
-      module = require(path)
-    } catch (e) {
-      if (e.code === 'ERR_REQUIRE_ESM') {
-        module = await import(path)
-      } else {
-        throw e;
-      }
-    }
-    return module;
-  };
   return deepClient;
 }
 
