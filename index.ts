@@ -16,6 +16,15 @@ const app = express();
 const GQL_URN = process.env.GQL_URN || 'localhost:3006/gql';
 const GQL_SSL = process.env.GQL_SSL || 0;
 
+const requireWrapper = (id: string) => {
+  // if (id === 'music-metadata') {
+  //   return { parseStream, parseFile };
+  // }
+  return require(id);
+}
+
+DeepClient.resolveDependency = requireWrapper;
+
 const toJSON = (data) => JSON.stringify(data, Object.getOwnPropertyNames(data), 2);
 
 const makeFunction = (code: string) => {
@@ -51,13 +60,6 @@ const makeDeepClient = (token: string) => {
     return module;
   };
   return deepClient;
-}
-
-const requireWrapper = (id: string) => {
-  // if (id === 'music-metadata') {
-  //   return { parseStream, parseFile };
-  // }
-  return require(id);
 }
 
 app.use(bodyParser.json({limit: '50mb'}));
