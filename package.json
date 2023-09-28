@@ -40,7 +40,7 @@
     "lodash": "^4.17.21",
     "log": "^6.3.1",
     "mathjs": "^11.4.0",
-    "midjourney": "^4.2.1",
+    "midjourney": "^4.3.12",
     "music-metadata": "^8.1.4",
     "music-metadata-browser": "^2.5.10",
     "nodemailer": "^6.9.2",
