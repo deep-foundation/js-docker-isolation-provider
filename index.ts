@@ -1,5 +1,6 @@
 import express from 'express';
 import { generateApolloClient } from "@deep-foundation/hasura/client.js";
+import { HasuraApi } from '@deep-foundation/hasura/api';
 import { DeepClient, parseJwt } from "@deep-foundation/deeplinks/imports/client.js";
 import { gql } from '@apollo/client/index.js';
 import memoize from 'lodash/memoize.js';
@@ -13,8 +14,11 @@ const memoEval = memoize(eval);
 
 const app = express();
 
-const GQL_URN = process.env.GQL_URN || 'localhost:3006/gql';
+const GQL_URN = process.env.GQL_URN || 'host.docker.internal:3006/gql';
 const GQL_SSL = process.env.GQL_SSL || 0;
+
+const DEEPLINKS_HASURA_PATH = process.env.DEEPLINKS_HASURA_PATH || 'host.docker.internal:8080';
+const DEEPLINKS_HASURA_SSL = !!(+process.env.DEEPLINKS_HASURA_SSL || 0);
 
 const requireWrapper = (id: string) => {
   // if (id === 'music-metadata') {
@@ -36,7 +40,7 @@ const makeFunction = (code: string) => {
   return fn;
 }
 
-const makeDeepClient = (token: string) => {
+const makeDeepClient = (token: string, secret?: string) => {
   if (!token) throw new Error('No token provided');
   const decoded = parseJwt(token);
   const linkId = decoded?.userId;
@@ -45,6 +49,17 @@ const makeDeepClient = (token: string) => {
     ssl: !!+GQL_SSL,
     token,
   });
+
+  const unsafe: any = {};
+  if (secret) {
+    unsafe.hasura = new HasuraApi({
+      path: DEEPLINKS_HASURA_PATH,
+      ssl: DEEPLINKS_HASURA_SSL,
+      secret: secret,
+    });
+  }
+
+  // const deepClient = new DeepClient({ apolloClient, linkId, token, unsafe }) as any;
   const deepClient = new DeepClient({ apolloClient, linkId, token }) as any;
   return deepClient;
 }
