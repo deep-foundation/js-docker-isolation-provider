@@ -1,6 +1,6 @@
 import express from 'express';
 import { generateApolloClient } from "@deep-foundation/hasura/client.js";
-import { HasuraApi } from '@deep-foundation/hasura/api';
+import { HasuraApi } from '@deep-foundation/hasura/api.js';
 import { DeepClient, parseJwt } from "@deep-foundation/deeplinks/imports/client.js";
 import { gql } from '@apollo/client/index.js';
 import memoize from 'lodash/memoize.js';
