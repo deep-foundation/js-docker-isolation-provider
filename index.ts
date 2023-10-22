@@ -59,8 +59,7 @@ const makeDeepClient = (token: string, secret?: string) => {
     });
   }
 
-  // const deepClient = new DeepClient({ apolloClient, linkId, token, unsafe }) as any;
-  const deepClient = new DeepClient({ apolloClient, linkId, token }) as any;
+  const deepClient = new DeepClient({ apolloClient, linkId, token, unsafe }) as any;
   return deepClient;
 }
 
@@ -75,9 +74,9 @@ app.post('/init', (req, res) => {
 app.post('/call', async (req, res) => {
   try {
     console.log('call body params', req?.body?.params);
-    const { jwt, code, data } = req?.body?.params || {};
+    const { jwt, secret, code, data } = req?.body?.params || {};
     const fn = makeFunction(code);
-    const deep = makeDeepClient(jwt);
+    const deep = makeDeepClient(jwt, secret);
     const result = await fn({ data, deep, gql, require: requireWrapper }); // Supports both sync and async functions the same way
     console.log('call result', result);
     res.json({ resolved: result });
@@ -94,9 +93,9 @@ app.use('/http-call', async (req, res, next) => {
   try {
     const options = decodeURI(`${req.headers['deep-call-options']}`) || '{}';
     console.log('deep-call-options', options);
-    const { jwt, code, data } = JSON.parse(options as string);
+    const { jwt, secret, code, data } = JSON.parse(options as string);
     const fn = makeFunction(code);
-    const deep = makeDeepClient(jwt);
+    const deep = makeDeepClient(jwt, secret);
     await fn(req, res, next, { data, deep, gql, require: requireWrapper }); // Supports both sync and async functions the same way
   }
   catch(rejected)
