@@ -16,6 +16,7 @@
     "@google-cloud/language": "^5.2.1",
     "@google-cloud/speech": "^5.3.1",
     "@google-cloud/vision": "^3.1.2",
+    "@likissdmd/warframe-market-prime-trash-buyer": "^1.1.0",
     "@octokit/graphql": "^6.0.1",
     "@pbe/react-yandex-maps": "^1.2.5",
     "@types/node": "^14.18.9",
