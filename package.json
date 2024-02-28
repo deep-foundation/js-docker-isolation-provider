@@ -33,7 +33,7 @@
     "case-anything": "^2.1.13",
     "compromise": "^14.10.0",
     "convert-audio": "^1.0.1",
-    "discord.js": "^14.9.0",
+    "discord.js": "^14.14.1",
     "esia": "^0.2.3",
     "express": "^4.17.1",
     "express-session": "^1.17.3",
