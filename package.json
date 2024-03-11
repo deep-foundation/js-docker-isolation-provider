@@ -9,7 +9,7 @@
     "package:publish": "npm run package:build && npm publish --access public && npm run package:unbuild"
   },
   "dependencies": {
-    "@deep-foundation/deeplinks": "^0.0.326",
+    "@deep-foundation/deeplinks": "^0.0.333",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
@@ -23,7 +23,7 @@
     "@octokit/graphql": "^6.0.1",
     "@pbe/react-yandex-maps": "^1.2.5",
     "@types/node": "^14.18.9",
-    "apollo-server": "^2.21.0",
+    "apollo-server": "^3.13.0",
     "apollo-server-core": "^3.6.1",
     "apollo-server-express": "^3.5.0",
     "assert": "^2.0.0",
