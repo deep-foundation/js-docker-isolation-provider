@@ -2,6 +2,8 @@
 
 # js-docker-isolation-provider
 
+## HTTP routes
+
 - `/healthz` - GET - 200 - Health check endpoint
   - Response:
     - `{}`
