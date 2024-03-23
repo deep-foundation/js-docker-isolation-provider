@@ -3,6 +3,7 @@ import { generateApolloClient } from "@deep-foundation/hasura/client.js";
 import { HasuraApi } from '@deep-foundation/hasura/api.js';
 import { DeepClient, parseJwt } from "@deep-foundation/deeplinks/imports/client.js";
 import { gql } from '@apollo/client/index.js';
+import { serializeError } from 'serialize-error';
 import memoize from 'lodash/memoize.js';
 import http from 'http';
 // import { parseStream, parseFile } from 'music-metadata';
@@ -28,8 +29,6 @@ const requireWrapper = (id: string) => {
 }
 
 DeepClient.resolveDependency = requireWrapper;
-
-const toJSON = (data) => JSON.stringify(data, Object.getOwnPropertyNames(data), 2);
 
 const makeFunction = (code: string) => {
   const fn = memoEval(code);
@@ -63,27 +62,37 @@ const makeDeepClient = (token: string, secret?: string) => {
   return deepClient;
 }
 
+const execute = async (args, options) => {
+  const { jwt, secret, code, data } = options;
+  const fn = makeFunction(code);
+  const deep = makeDeepClient(jwt, secret);
+  // await supports both sync and async functions the same way
+  const result = await fn(...args, { data, deep, gql, require: requireWrapper });
+  return result;
+}
+
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
 app.get('/healthz', (req, res) => {
   res.json({});
 });
+
 app.post('/init', (req, res) => {
   res.json({});
 });
+
 app.post('/call', async (req, res) => {
   try {
-    console.log('call body params', req?.body?.params);
-    const { jwt, secret, code, data } = req?.body?.params || {};
-    const fn = makeFunction(code);
-    const deep = makeDeepClient(jwt, secret);
-    const result = await fn({ data, deep, gql, require: requireWrapper }); // Supports both sync and async functions the same way
+    const options = req?.body?.params || {};
+    console.log('call options', options);
+    const result = await execute([], options);
     console.log('call result', result);
     res.json({ resolved: result });
   }
   catch(rejected)
   {
-    const processedRejection = JSON.parse(toJSON(rejected));
+    const processedRejection = serializeError(rejected);
     console.log('rejected', processedRejection);
     res.json({ rejected: processedRejection });
   }
@@ -91,18 +100,17 @@ app.post('/call', async (req, res) => {
 
 app.use('/http-call', async (req, res, next) => {
   try {
-    const options = decodeURI(`${req.headers['deep-call-options']}`) || '{}';
-    console.log('deep-call-options', options);
-    const { jwt, secret, code, data } = JSON.parse(options as string);
-    const fn = makeFunction(code);
-    const deep = makeDeepClient(jwt, secret);
-    await fn(req, res, next, { data, deep, gql, require: requireWrapper }); // Supports both sync and async functions the same way
+    const options = JSON.parse(decodeURI(`${req.headers['deep-call-options']}`) || '{}');
+    console.log('http call options', options);
+    const result = await execute([req, res, next], options);
+    console.log('http call result', result);
+    return result;
   }
   catch(rejected)
   {
-    const processedRejection = JSON.parse(toJSON(rejected));
+    const processedRejection = serializeError(rejected);
     console.log('rejected', processedRejection);
-    res.json({ rejected: processedRejection }); // TODO: Do we need to send json to client?
+    res.json({ rejected: processedRejection }); // TODO: Do we need to send json to client? HTTP respone may not expect json output.
   }
 });
 
