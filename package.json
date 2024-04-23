@@ -84,7 +84,8 @@
     "tinkoff-sdk-grpc-js": "^1.8.0-fix",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
-    "vk-io": "^4.8.3"
+    "vk-io": "^4.8.3",
+    "zod": "^3.23.3"
   },
   "engines": {
     "node": "^18"
