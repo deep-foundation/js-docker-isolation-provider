@@ -1,6 +1,6 @@
 {
   "name": "@deep-foundation/js-docker-isolation-provider",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "type": "module",
   "scripts": {
     "dev": "nodemon index.ts",
