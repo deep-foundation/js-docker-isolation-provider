@@ -1,6 +1,6 @@
 {
   "name": "@deep-foundation/js-docker-isolation-provider",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "type": "module",
   "scripts": {
     "dev": "nodemon index.ts",
@@ -9,7 +9,7 @@
     "package:publish": "npm run package:build && npm publish --access public && npm run package:unbuild"
   },
   "dependencies": {
-    "@deep-foundation/deeplinks": "^0.0.353",
+    "@deep-foundation/deeplinks": "^0.0.354",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
