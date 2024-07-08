@@ -39,7 +39,7 @@ const makeFunction = (code: string) => {
   return fn;
 }
 
-const makeDeepClient = (token: string, secret?: string) => {
+const makeDeepClient = (token: string, path?: string, ssl?: boolean, secret?: string) => {
   if (!token) throw new Error('No token provided');
   const decoded = parseJwt(token);
   const linkId = decoded?.userId;
@@ -52,9 +52,9 @@ const makeDeepClient = (token: string, secret?: string) => {
   const unsafe: any = {};
   if (secret) {
     unsafe.hasura = new HasuraApi({
-      path: DEEPLINKS_HASURA_PATH,
-      ssl: DEEPLINKS_HASURA_SSL,
-      secret: secret,
+      path,
+      ssl,
+      secret,
     });
   }
 
@@ -63,9 +63,9 @@ const makeDeepClient = (token: string, secret?: string) => {
 }
 
 const execute = async (args, options) => {
-  const { jwt, secret, code, data } = options;
+  const { jwt, secret, code, data, path, ssl } = options;
   const fn = makeFunction(code);
-  const deep = makeDeepClient(jwt, secret);
+  const deep = makeDeepClient(jwt, path, ssl, secret);
   // await supports both sync and async functions the same way
   const result = await fn(...args, { data, deep, gql, require: requireWrapper });
   return result;
