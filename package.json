@@ -1,15 +1,16 @@
 {
   "name": "@deep-foundation/js-docker-isolation-provider",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "type": "module",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon index.ts",
     "package:build": "tsc --project tsconfig.json",
     "package:unbuild": "rimraf ./*.js && rimraf ./*.js.map && rimraf ./*.d.ts && (cd ./imports && rimraf ./*.js && rimraf ./*.js.map && rimraf ./*.d.ts && cd ../)",
     "package:publish": "npm run package:build && npm publish --access public && npm run package:unbuild"
   },
   "dependencies": {
-    "@deep-foundation/deeplinks": "^0.0.542",
+    "@deep-foundation/deeplinks": "^0.0.611",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
